@@ -1,22 +1,20 @@
 {
   "files": {
-    "main.css": "/psychology-quiz/static/css/main.9d5b29c0.chunk.css",
-    "main.js": "/psychology-quiz/static/js/main.69af2cde.chunk.js",
-    "main.js.map": "/psychology-quiz/static/js/main.69af2cde.chunk.js.map",
-    "runtime-main.js": "/psychology-quiz/static/js/runtime-main.40499e2d.js",
-    "runtime-main.js.map": "/psychology-quiz/static/js/runtime-main.40499e2d.js.map",
-    "static/js/2.da50ad96.chunk.js": "/psychology-quiz/static/js/2.da50ad96.chunk.js",
-    "static/js/2.da50ad96.chunk.js.map": "/psychology-quiz/static/js/2.da50ad96.chunk.js.map",
-    "static/js/3.d7beacd6.chunk.js": "/psychology-quiz/static/js/3.d7beacd6.chunk.js",
-    "static/js/3.d7beacd6.chunk.js.map": "/psychology-quiz/static/js/3.d7beacd6.chunk.js.map",
+    "main.css": "/psychology-quiz/static/css/main.afd4f80d.chunk.css",
+    "main.js": "/psychology-quiz/static/js/main.b19bdb83.chunk.js",
+    "main.js.map": "/psychology-quiz/static/js/main.b19bdb83.chunk.js.map",
+    "runtime-main.js": "/psychology-quiz/static/js/runtime-main.5fd32e6a.js",
+    "runtime-main.js.map": "/psychology-quiz/static/js/runtime-main.5fd32e6a.js.map",
+    "static/js/2.297c8606.chunk.js": "/psychology-quiz/static/js/2.297c8606.chunk.js",
+    "static/js/2.297c8606.chunk.js.map": "/psychology-quiz/static/js/2.297c8606.chunk.js.map",
     "index.html": "/psychology-quiz/index.html",
-    "static/css/main.9d5b29c0.chunk.css.map": "/psychology-quiz/static/css/main.9d5b29c0.chunk.css.map",
-    "static/js/2.da50ad96.chunk.js.LICENSE.txt": "/psychology-quiz/static/js/2.da50ad96.chunk.js.LICENSE.txt"
+    "static/css/main.afd4f80d.chunk.css.map": "/psychology-quiz/static/css/main.afd4f80d.chunk.css.map",
+    "static/js/2.297c8606.chunk.js.LICENSE.txt": "/psychology-quiz/static/js/2.297c8606.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.40499e2d.js",
-    "static/js/2.da50ad96.chunk.js",
-    "static/css/main.9d5b29c0.chunk.css",
-    "static/js/main.69af2cde.chunk.js"
+    "static/js/runtime-main.5fd32e6a.js",
+    "static/js/2.297c8606.chunk.js",
+    "static/css/main.afd4f80d.chunk.css",
+    "static/js/main.b19bdb83.chunk.js"
   ]
 }
