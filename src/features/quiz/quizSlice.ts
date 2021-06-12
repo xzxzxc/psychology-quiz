@@ -2,49 +2,69 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Enumerable, IEnumerable } from "linq-javascript";
 import { QuizStorrage } from "./quizStorrage";
 
-export class QuizDto {
+export class QuizModel {
   title!: string;
   description!: string;
-  groups!: GroupDto[];
+  groups!: GroupModel[];
+  groupsName?: string;
 }
-export class GroupDto {
+export class GroupModel {
   name!: string;
-  questions!: QuestionDto[];
+  questions!: QuestionModel[];
 }
 
-export class QuestionDto {
+export class QuestionModel {
   number!: number;
   value!: string;
   answer?: number;
 }
 
-export class AnswerVm {
+export class AnswerModel {
   questionNumber!: number;
   value!: number;
 }
 
-export class QuizCollection {
-  test!: QuizDto;
+export type QuizCollection = { [name: string]: QuizModel };
+
+export class QuizState {
+  currentQuiz?: QuizModel;
+  collection!: QuizCollection;
 }
+
+const initialState: QuizState = {
+  collection: QuizStorrage.collection,
+};
 
 export const quizSlice = createSlice({
   name: "quiz",
-  initialState: QuizStorrage.collection,
+  initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    answer: (state: QuizCollection, action: PayloadAction<AnswerVm>) => {
-      const question = selectQuestions(selectTestQuiz(state)) // TODO:
-        .first((q) => q.number === action.payload.questionNumber);
+    selectQuiz: (state: QuizState, action: PayloadAction<string>) => {
+      state.currentQuiz = state.collection[action.payload];
+    },
+    answer: (state: QuizState, action: PayloadAction<AnswerModel>) => {
+      const question = selectQuestions(selectCurrentQuiz(state)).first(
+        (q) => q.number === action.payload.questionNumber
+      );
       question.answer = action.payload.value;
     },
   },
 });
 
-export const { answer } = quizSlice.actions;
+export const { answer, selectQuiz } = quizSlice.actions;
 
-export const selectQuestions = (quiz: QuizDto): IEnumerable<QuestionDto> =>
+export const selectQuestions = (quiz: QuizModel): IEnumerable<QuestionModel> =>
   Enumerable.fromSource(quiz.groups).selectMany((g) => g.questions);
 
-export const selectTestQuiz = (state: QuizCollection): QuizDto => state.test;
+export const selectCurrentQuizOrUndef = (
+  state: QuizState
+): QuizModel | undefined => state.currentQuiz;
+
+export const selectCurrentQuiz = (state: QuizState): QuizModel => {
+  const quiz = selectCurrentQuizOrUndef(state);
+  if (!quiz) throw new Error("No quiz was selected!");
+  return quiz;
+};
 
 export default quizSlice.reducer;
