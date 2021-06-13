@@ -1,7 +1,4 @@
-import {
-  selectQuestions,
-  QuizModel,
-} from "./quizSlice";
+import { selectQuestions, QuizModel } from "./quizSlice";
 import Question from "./Question";
 import {
   Button,
@@ -31,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Quiz({quiz}:{quiz: QuizModel}) {
+export function Quiz({ quiz }: { quiz: QuizModel }) {
   const classes = useStyles();
 
   const [activeStep, setActiveStep] = useState(0);
-  
+
   let myRef = useRef<HTMLElement>(null);
 
   const handleNext = () => {
@@ -62,37 +59,41 @@ export function Quiz({quiz}:{quiz: QuizModel}) {
         ></div>
       </Container>
       {activeStep !== questionsCount && (
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {questions
-            .select((question) => (
-              <Step key={question.number}>
-                <StepLabel>{question.value}</StepLabel>
-                <StepContent ref={activeStep===question.number ? myRef : undefined}>
-                  <Question question={question} onAnswer={handleNext} />
-                  <div className={classes.actionsContainer}>
-                    <div>
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.button}
-                      >
-                        Назад
-                      </Button>
-                      <Button
-                        variant="contained"
-                        disabled={!question.answer}
-                        onClick={handleNext}
-                        className={classes.button}
-                      >
-                        Вперед
-                      </Button>
+        <Container>
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {questions
+              .select((question) => (
+                <Step key={question.number}>
+                  <StepLabel>{question.value}</StepLabel>
+                  <StepContent
+                    ref={activeStep === question.number ? myRef : undefined}
+                  >
+                    <Question question={question} onAnswer={handleNext} />
+                    <div className={classes.actionsContainer}>
+                      <div>
+                        <Button
+                          disabled={activeStep === 0}
+                          onClick={handleBack}
+                          className={classes.button}
+                        >
+                          Назад
+                        </Button>
+                        <Button
+                          variant="contained"
+                          disabled={!question.answer}
+                          onClick={handleNext}
+                          className={classes.button}
+                        >
+                          Вперед
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </StepContent>
-              </Step>
-            ))
-            .toArray()}
-        </Stepper>
+                  </StepContent>
+                </Step>
+              ))
+              .toArray()}
+          </Stepper>
+        </Container>
       )}
       {activeStep === questionsCount && <Results quiz={quiz} />}
     </div>
