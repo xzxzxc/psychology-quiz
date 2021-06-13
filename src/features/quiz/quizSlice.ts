@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Enumerable, IEnumerable } from "linq-javascript";
+import { TypedUseSelectorHook } from "react-redux";
+import { useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
 import { QuizStorrage } from "./quizStorrage";
 
 export class QuizModel {
@@ -54,6 +57,8 @@ export const quizSlice = createSlice({
 
 export const { answer, selectQuiz } = quizSlice.actions;
 
+export const selectQuizState = (root: RootState): QuizState => root.quiz;
+
 export const selectQuestions = (quiz: QuizModel): IEnumerable<QuestionModel> =>
   Enumerable.fromSource(quiz.groups).selectMany((g) => g.questions);
 
@@ -66,5 +71,14 @@ export const selectCurrentQuiz = (state: QuizState): QuizModel => {
   if (!quiz) throw new Error("No quiz was selected!");
   return quiz;
 };
+
+export const useQuizSelector: TypedUseSelectorHook<QuizState> = <TSelected>(
+  selector: (state: QuizState) => TSelected,
+  equalityFn?: (left: TSelected, right: TSelected) => boolean
+): TSelected =>
+  useAppSelector(
+    (rootState: RootState) => selector(selectQuizState(rootState)),
+    equalityFn
+  );
 
 export default quizSlice.reducer;

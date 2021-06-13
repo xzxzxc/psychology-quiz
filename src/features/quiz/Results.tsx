@@ -1,6 +1,7 @@
 import { QuizModel, selectQuestions } from "./quizSlice";
 import {
   Button,
+  Container,
   makeStyles,
   Paper,
   Table,
@@ -15,16 +16,15 @@ import { Enumerable } from "linq-javascript";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    minWidth: 650,
+    minWidth: 350,
   },
-  resetContainer: {
+  downloadContainer: {
     padding: theme.spacing(3),
   },
   contrastTextColor: {
     color: theme.palette.primary.contrastText,
   },
 }));
-
 
 class GeoupResult {
   name!: string;
@@ -61,43 +61,43 @@ export function Results({ quiz }: { quiz: QuizModel }) {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>{quiz.groupsName ?? "Назва"}</TableCell>
-              <TableCell align="right">К-ть питань</TableCell>
-              <TableCell align="right">Сума балів</TableCell>
-              <TableCell align="right">Середнє</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {results.map((result) => {
-              return (
-                <TableRow key={result.name}>
-                  <TableCell component="th" scope="row">
-                    {result.name}
-                  </TableCell>
-                  <TableCell align="right">{result.count}</TableCell>
-                  <TableCell align="right">{result.total}</TableCell>
-                  <TableCell align="right">{result.average}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Paper square elevation={0} className={classes.resetContainer}>
-        <Button variant="contained" color="primary">
-          <CSVLink
-            data={csvData}
-            filename={`Результати ${quiz.title}.csv`}
-            className={classes.contrastTextColor}
-          >
-            Завантажити резульатат
-          </CSVLink>
-        </Button>
-      </Paper>
+      <Container>
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>{quiz.groupsName ?? "Назва"}</TableCell>
+                <TableCell align="right">К-ть питань</TableCell>
+                <TableCell align="right">Сума балів</TableCell>
+                <TableCell align="right">Середнє</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {results.map((result) => {
+                return (
+                  <TableRow key={result.name}>
+                    <TableCell>{result.name}</TableCell>
+                    <TableCell align="right">{result.count}</TableCell>
+                    <TableCell align="right">{result.total}</TableCell>
+                    <TableCell align="right">{result.average}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Container className={classes.downloadContainer}>
+          <Button variant="contained" color="primary">
+            <CSVLink
+              data={csvData}
+              filename={`Результати ${quiz.title}.csv`}
+              className={classes.contrastTextColor}
+            >
+              Завантажити резульатат
+            </CSVLink>
+          </Button>
+        </Container>
+      </Container>
     </>
   );
 }

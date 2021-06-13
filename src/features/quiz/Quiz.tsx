@@ -1,17 +1,18 @@
-import { selectQuestions, selectCurrentQuizOrUndef } from "./quizSlice";
-import { useAppSelector } from "../../app/hooks";
+import {
+  selectQuestions,
+  QuizModel,
+} from "./quizSlice";
 import Question from "./Question";
 import {
   Button,
   Container,
   makeStyles,
-  Paper,
   Step,
   StepContent,
   StepLabel,
   Stepper,
 } from "@material-ui/core";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Results from "./Results";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,21 +31,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Quiz() {
-  const quiz = useAppSelector((root) => selectCurrentQuizOrUndef(root.quiz));
-
+export function Quiz({quiz}:{quiz: QuizModel}) {
   const classes = useStyles();
 
   const [activeStep, setActiveStep] = useState(0);
-
-  if (!quiz) return null;
+  
+  let myRef = useRef<HTMLElement>(null);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    myRef.current?.scrollIntoView();
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    myRef.current?.scrollIntoView();
   };
 
   const questions = selectQuestions(quiz).orderBy((q) => q.number);
@@ -60,42 +61,40 @@ export function Quiz() {
           dangerouslySetInnerHTML={{ __html: quiz.description }}
         ></div>
       </Container>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {questions
-          .select((question) => (
-            <Step key={question.number}>
-              <StepLabel>{question.value}</StepLabel>
-              <StepContent>
-                <Question question={question} onAnswer={handleNext} />
-                <div className={classes.actionsContainer}>
-                  <div>
-                    <Button
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      className={classes.button}
-                    >
-                      Назад
-                    </Button>
-                    <Button
-                      variant="contained"
-                      disabled={!question.answer}
-                      onClick={handleNext}
-                      className={classes.button}
-                    >
-                      Вперед
-                    </Button>
+      {activeStep !== questionsCount && (
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {questions
+            .select((question) => (
+              <Step key={question.number}>
+                <StepLabel>{question.value}</StepLabel>
+                <StepContent ref={activeStep===question.number ? myRef : undefined}>
+                  <Question question={question} onAnswer={handleNext} />
+                  <div className={classes.actionsContainer}>
+                    <div>
+                      <Button
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        className={classes.button}
+                      >
+                        Назад
+                      </Button>
+                      <Button
+                        variant="contained"
+                        disabled={!question.answer}
+                        onClick={handleNext}
+                        className={classes.button}
+                      >
+                        Вперед
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </StepContent>
-            </Step>
-          ))
-          .toArray()}
-      </Stepper>
-      {activeStep === questionsCount && (
-        <Paper square elevation={0} className={classes.resetContainer}>
-          <Results quiz={quiz} />
-        </Paper>
+                </StepContent>
+              </Step>
+            ))
+            .toArray()}
+        </Stepper>
       )}
+      {activeStep === questionsCount && <Results quiz={quiz} />}
     </div>
   );
 }

@@ -1,5 +1,5 @@
+import { FormControl, FormControlLabel, Grid, Radio, RadioGroup } from "@material-ui/core";
 import React from "react";
-import { ToggleButtonGroup, ToggleButton } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { QuestionModel, answer } from "./quizSlice";
 
@@ -25,29 +25,34 @@ function Question({
   };
 
   return (
-    <div
-      className="d-flex flex-column
-       justify-content-center align-items-center"
-    >
-      <h3>
-        {question.number}. {question.value}
-      </h3>
+    <Grid container direction="row" justify="center" alignItems="center">
+      <Grid item xs={12}>
+        <h3>
+          {question.number}. {question.value}
+        </h3>
+      </Grid>
 
-      <ToggleButtonGroup
-        type="radio"
-        name={`btns_${question.number}`}
-        onChange={handleAnswer}
-        value={question.answer}
-      >
-        {[1, 2, 3, 4, 5, 6].map((ans_val) => (
-          <ToggleButton key={ans_val} value={ans_val}>
-            {ans_val}
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
-
-      <div className="btn-group" role="group"></div>
-    </div>
+      <Grid item xs={12}>
+        <FormControl component="fieldset">
+          <RadioGroup
+            row
+            defaultValue="top"
+            value={question.answer ?? -1}
+            onChange={(_, val) => handleAnswer(Number(val))}
+          >
+            {[1, 2, 3, 4, 5, 6].map((ans_val) => (
+              <FormControlLabel
+                value={ans_val}
+                key={ans_val}
+                control={<Radio color="primary" />}
+                label={ans_val}
+                labelPlacement="top"
+              />
+            ))}
+          </RadioGroup>
+        </FormControl>
+      </Grid>
+    </Grid>
   );
 }
 
