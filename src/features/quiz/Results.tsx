@@ -45,7 +45,7 @@ export function Results({ quiz }: { quiz: QuizModel }) {
           throw new Error(`No answer on question #${q.number}`);
         })()
     );
-    const average = total / count;
+    const average = Math.round((total / count + Number.EPSILON) * 100) / 100;
 
     return { name: group.name, count, total, average };
   });
@@ -91,6 +91,7 @@ export function Results({ quiz }: { quiz: QuizModel }) {
             <CSVLink
               data={csvData}
               filename={`Результати ${quiz.title}.csv`}
+              separator={"\t"}
               className={classes.contrastTextColor}
             >
               Завантажити резульатат
