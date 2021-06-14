@@ -94,7 +94,7 @@ export function Results({ quiz }: { quiz: QuizModel }) {
               separator={"\t"}
               className={classes.contrastTextColor}
             >
-              Завантажити резульатат
+              Завантажити результат
             </CSVLink>
           </Button>
         </Container>
